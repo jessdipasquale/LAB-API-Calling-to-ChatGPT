@@ -1,0 +1,50 @@
+[
+  {
+    "image_path": "/Users/user/Desktop/ironhack/Week1/20260205/product_listing_project/product_images/1526.jpg",
+    "listing": {
+      "title": "Puma Black Backpack",
+      "category": "Bags & Backpacks",
+      "condition": "new",
+      "key_features": [
+        "Durable black material",
+        "Front Puma logo",
+        "Main zippered compartment",
+        "Adjustable shoulder straps",
+        "Top handle for easy carrying"
+      ],
+      "description": "A sleek black backpack from Puma featuring a durable exterior with a prominent Puma logo on the front. The backpack includes a spacious main compartment with a zipper, adjustable shoulder straps for comfort, and a top handle for convenient carrying."
+    }
+  },
+  {
+    "image_path": "/Users/user/Desktop/ironhack/Week1/20260205/product_listing_project/product_images/1165.jpg",
+    "listing": {
+      "title": "Women's Black Open Front Cardigan",
+      "category": "Clothing > Women's Clothing > Sweaters & Cardigans",
+      "condition": "new",
+      "key_features": [
+        "Open front design",
+        "Long sleeves",
+        "Black color",
+        "Lightweight fabric",
+        "Casual and office wear suitable"
+      ],
+      "description": "This women's black open front cardigan features a lightweight fabric perfect for layering. Its long sleeves and classic black color make it versatile for both casual and office wear. Pair it with your favorite tops and bottoms for a stylish, comfortable look."
+    }
+  },
+  {
+    "image_path": "/Users/user/Desktop/ironhack/Week1/20260205/product_listing_project/product_images/1163.jpg",
+    "listing": {
+      "title": "Samsung Blue Cycling Jersey with Red Accents",
+      "category": "Sportswear",
+      "condition": "new",
+      "key_features": [
+        "Short sleeves",
+        "Zip-up front",
+        "Samsung branding on chest",
+        "Red collar and side accents",
+        "Made for cycling"
+      ],
+      "description": "A stylish blue cycling jersey featuring Samsung branding on the chest. It has short sleeves and a zip-up front, with red accents on the collar and sides for a sporty look. Comfortable and suitable for cycling activities."
+    }
+  }
+]
