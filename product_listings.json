@@ -2,49 +2,48 @@
   {
     "image_path": "/Users/user/Desktop/ironhack/Week1/20260205/product_listing_project/product_images/1526.jpg",
     "listing": {
-      "title": "Puma Black Backpack",
-      "category": "Bags & Backpacks",
+      "title": "Puma Black Polyester Backpack",
+      "category": "Luggage & Bags",
       "condition": "new",
       "key_features": [
-        "Durable black material",
-        "Front Puma logo",
-        "Main zippered compartment",
-        "Adjustable shoulder straps",
-        "Top handle for easy carrying"
+        "Spacious main compartment",
+        "Adjustable padded shoulder straps",
+        "Durable polyester material",
+        "Puma logo on front"
       ],
-      "description": "A sleek black backpack from Puma featuring a durable exterior with a prominent Puma logo on the front. The backpack includes a spacious main compartment with a zipper, adjustable shoulder straps for comfort, and a top handle for convenient carrying."
+      "description": "A stylish and durable black backpack made from high-quality polyester, featuring the iconic Puma logo. Perfect for everyday use, school, or travel, with adjustable padded straps for comfort and a spacious main compartment for your essentials."
     }
   },
   {
     "image_path": "/Users/user/Desktop/ironhack/Week1/20260205/product_listing_project/product_images/1165.jpg",
     "listing": {
-      "title": "Women's Black Open Front Cardigan",
-      "category": "Clothing > Women's Clothing > Sweaters & Cardigans",
+      "title": "Black Open Front Shrug Cardigan",
+      "category": "Clothing",
       "condition": "new",
       "key_features": [
         "Open front design",
         "Long sleeves",
         "Black color",
-        "Lightweight fabric",
-        "Casual and office wear suitable"
+        "Lightweight material",
+        "Casual and versatile style"
       ],
-      "description": "This women's black open front cardigan features a lightweight fabric perfect for layering. Its long sleeves and classic black color make it versatile for both casual and office wear. Pair it with your favorite tops and bottoms for a stylish, comfortable look."
+      "description": "A stylish black shrug cardigan featuring an open front design and long sleeves. Perfect for layering over tops or dresses, this lightweight and versatile piece adds a chic touch to any outfit."
     }
   },
   {
     "image_path": "/Users/user/Desktop/ironhack/Week1/20260205/product_listing_project/product_images/1163.jpg",
     "listing": {
-      "title": "Samsung Blue Cycling Jersey with Red Accents",
-      "category": "Sportswear",
+      "title": "Blue Samsung Sports Jersey",
+      "category": "Clothing",
       "condition": "new",
       "key_features": [
+        "Blue color with grey and light blue accents",
         "Short sleeves",
-        "Zip-up front",
-        "Samsung branding on chest",
-        "Red collar and side accents",
-        "Made for cycling"
+        "Samsung logo printed on front",
+        "Round collar design",
+        "Lightweight and breathable fabric"
       ],
-      "description": "A stylish blue cycling jersey featuring Samsung branding on the chest. It has short sleeves and a zip-up front, with red accents on the collar and sides for a sporty look. Comfortable and suitable for cycling activities."
+      "description": "A stylish blue sports jersey featuring the Samsung logo on the front. Designed with short sleeves and a comfortable round collar, made from lightweight and breathable fabric suitable for sports and casual wear."
     }
   }
 ]

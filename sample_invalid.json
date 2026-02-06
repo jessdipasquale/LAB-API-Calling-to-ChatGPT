@@ -1,0 +1,16 @@
+[
+  {
+    "image_path": "img2.jpg",
+    "listing": {
+      "title": "X",
+      "category": "This category is way too long and looks like a full sentence",
+      "condition": "brand_new",
+      "key_features": [
+        "ok",
+        "no.",
+        "a"
+      ],
+      "description": "- bullet one\n- bullet two\n- bullet three"
+    }
+  }
+]

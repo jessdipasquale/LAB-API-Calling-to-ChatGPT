@@ -5,27 +5,24 @@ import pandas as pd
 from dotenv import load_dotenv
 import os
 load_dotenv()
+
 print(os.getenv("OPENAI_API_KEY"))
 
 import os
 
 print(os.getenv("OPENAI_API_KEY") is not None)
 
-# Install: pip install datasets
 from datasets import load_dataset
 import requests
 from PIL import Image
 import pandas as pd
 from pathlib import Path
 
-# Load dataset from HuggingFace
 print("Loading product dataset...")
 try:
-    # Try loading the dataset
     dataset = load_dataset("ashraq/fashion-product-images-small", split="train[:100]")  # First 100 samples
     print(f"✓ Loaded {len(dataset)} products")
 
-    # Convert to pandas for easier manipulation
     products_df = pd.DataFrame(dataset)
     print(f"Dataset columns: {products_df.columns.tolist()}")
 
@@ -33,8 +30,8 @@ except Exception as e:
     print(f"⚠ Could not load HuggingFace dataset: {e}")
     print("Using local images instead...")
 
-    # Alternative: Use local images
-    # Create a products.json file with product information
+    
+    
     products_data = [
         {
             "id": 1,
@@ -94,7 +91,6 @@ def encode_image_to_base64(pil_image):
 sample = dataset[0]
 image = sample["image"]
 
-# Encode the image to base64
 encoded_image = encode_image_to_base64(image)
 
 print("Base64 encoding successful!")
@@ -147,7 +143,6 @@ Base your description only on what is visible in the image. Do not assume featur
 
     return prompt
 
-# Test prompt creation
 test_prompt = create_product_listing_prompt(
     product_name="Blue sport t-shirt",
     price=79.99,
@@ -158,7 +153,7 @@ test_prompt = create_product_listing_prompt(
 print("\n" + "="*50)
 print("PROMPT TEMPLATE")
 print("="*50)
-print(test_prompt[:500] + "...")  # Show first 500 characters
+print(test_prompt[:500] + "...") 
 
 from dotenv import load_dotenv
 import os
@@ -219,7 +214,7 @@ print(parsed)
 
 raw = response.output_text
 print("LEN:", len(raw))
-print("RAW repr:", repr(raw[:300]))  # mostra i primi 300 caratteri "veri"
+print("RAW repr:", repr(raw[:300]))  
 
 import json
 from openai import OpenAI
@@ -245,7 +240,7 @@ response = client.responses.create(
         "format": {
             "type": "json_schema",
             "name": "simple_response",
-            "schema": schema["schema"]   # ✅ QUI: non json_schema
+            "schema": schema["schema"]   
         }
     }
 )
@@ -263,10 +258,18 @@ import os
 import json
 import base64
 from datetime import datetime
+from pathlib import Path
+
 from openai import OpenAI
+from pydantic import ValidationError
 
-base_dir = os.path.expanduser("~/Desktop/ironhack/Week1/20260205/product_listing_project/product_images")
+from models import ListingRequest, ProductListing
 
+client = OpenAI()
+
+base_dir = os.path.expanduser(
+    "~/Desktop/ironhack/Week1/20260205/product_listing_project/product_images"
+)
 assert os.path.exists(base_dir), "❌ The product_images folder does not exist"
 
 IMAGE_PATHS = [
@@ -274,14 +277,11 @@ IMAGE_PATHS = [
     for filename in os.listdir(base_dir)
     if filename.lower().endswith((".jpg", ".jpeg", ".png"))
 ]
-
-assert len(IMAGE_PATHS) > 1, "❌ At least two images are required for batch processing"
+assert len(IMAGE_PATHS) >= 1, "❌ No images found"
 
 print("Images found:")
 for path in IMAGE_PATHS:
     print(" -", path)
-
-client = OpenAI()
 
 LISTING_SCHEMA = {
     "type": "object",
@@ -299,15 +299,10 @@ LISTING_SCHEMA = {
         },
         "description": {"type": "string"}
     },
-    "required": [
-        "title",
-        "category",
-        "condition",
-        "key_features",
-        "description"
-    ]
+    "required": ["title", "category", "condition", "key_features", "description"]
 }
-def image_to_data_url(image_path):
+
+def image_to_data_url(image_path: str) -> str:
     extension = os.path.splitext(image_path)[1].lower().replace(".", "")
     mime_type = "jpeg" if extension in ["jpg", "jpeg"] else extension
 
@@ -316,8 +311,14 @@ def image_to_data_url(image_path):
 
     return f"data:image/{mime_type};base64,{encoded_image}"
 
-def generate_product_listing(image_path):
-    image_data_url = image_to_data_url(image_path)
+
+def generate_product_listing(valid_request: ListingRequest) -> ProductListing:
+    """
+    1) Chiamata API
+    2) Parse JSON
+    3) VALIDAZIONE OUTPUT con Pydantic (ProductListing)
+    """
+    image_data_url = image_to_data_url(valid_request.image_path)
 
     response = client.responses.create(
         model="gpt-4.1-mini",
@@ -338,29 +339,61 @@ def generate_product_listing(image_path):
         }
     )
 
-    return json.loads(response.output_text)
+    raw = response.output_text
+    data = json.loads(raw)
+
+    return ProductListing.model_validate(data)
+
 
 results = []
 errors = []
 
 for image_path in IMAGE_PATHS:
+
     try:
-        listing = generate_product_listing(image_path)
+        req = ListingRequest(image_path=image_path)
+    except ValidationError as e:
+        errors.append({
+            "image_path": image_path,
+            "stage": "input_validation",
+            "error": e.errors()
+        })
+        print(f"❌ Input invalid: {os.path.basename(image_path)}")
+        continue  
+
+    try:
+        listing = generate_product_listing(req)
+
         results.append({
             "image_path": image_path,
-            "listing": listing
+            "listing": listing.model_dump()
         })
         print(f"✅ Processed: {os.path.basename(image_path)}")
 
-    except Exception as error:
+    except ValidationError as e:
         errors.append({
             "image_path": image_path,
-            "error": str(error)
+            "stage": "output_validation",
+            "error": e.errors()
         })
-        print(f"❌ Error processing: {os.path.basename(image_path)}")
+        print(f"❌ Output invalid: {os.path.basename(image_path)}")
 
-from pathlib import Path
-import json
+    except json.JSONDecodeError as e:
+        errors.append({
+            "image_path": image_path,
+            "stage": "json_parse",
+            "error": str(e)
+        })
+        print(f"❌ JSON parse error: {os.path.basename(image_path)}")
+
+    except Exception as e:
+        errors.append({
+            "image_path": image_path,
+            "stage": "unknown",
+            "error": str(e)
+        })
+        print(f"❌ Unknown error: {os.path.basename(image_path)}")
+
 
 SCRIPT_DIR = Path(__file__).parent
 results_file = SCRIPT_DIR / "product_listings.json"
@@ -372,6 +405,10 @@ with open(results_file, "w", encoding="utf-8") as f:
 with open(errors_file, "w", encoding="utf-8") as f:
     json.dump(errors, f, indent=2, ensure_ascii=False)
 
-print("✅ JSON creati qui:")
-print(results_file)
-print(errors_file)
+print("\n📦 FINAL SUMMARY")
+print("Total products processed:", len(IMAGE_PATHS))
+print("Successful listings:", len(results))
+print("Errors:", len(errors))
+print("Saved files:")
+print(" -", results_file)
+print(" -", errors_file)

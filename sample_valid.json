@@ -1,0 +1,16 @@
+[
+  {
+    "image_path": "/Users/user/Desktop/Ironhack/Week1/20260205/product_listing_project/product_images/img1163.jpg",
+    "listing": {
+      "title": "Blue Sport T-Shirt",
+      "category": "Fashion",
+      "condition": "new",
+      "key_features": [
+        "Regular fit and comfortable feel",
+        "Breathable fabric for daily wear",
+        "Sporty casual design"
+      ],
+      "description": "A blue sporty t-shirt with a clean and versatile look. Suitable for everyday outfits and casual occasions. The style appears simple and easy to match with jeans or shorts."
+    }
+  }
+]
